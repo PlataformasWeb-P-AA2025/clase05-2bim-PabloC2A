@@ -72,9 +72,11 @@ def obtener_estudiante(request, id):
 
 
 # @login_required(login_url='/entrando/login/')
+# Se usa @login_required sin login_url explícito para desacoplar la URL de inicio de sesión
+# del código de las vistas. La ruta de login se define globalmente en settings.py con LOGIN_URL.
+# Esto facilita cambios futuros en la URL sin tener que modificar múltiples vistas manualmente.
 @login_required
 @permission_required('administrativo.add_estudiante', )
-# @permission_required('administrativo.add_estudiante', login_url="/entrando/login/")
 def crear_estudiante(request):
     """
     """
@@ -91,7 +93,7 @@ def crear_estudiante(request):
     return render(request, 'crearEstudiante.html', diccionario)
 
 
-@login_required(login_url='/entrando/login/')
+@login_required
 @permission_required('administrativo.change_estudiante',)
 def editar_estudiante(request, id):
     """
@@ -110,6 +112,8 @@ def editar_estudiante(request, id):
     return render(request, 'editarEstudiante.html', diccionario)
 
 
+@login_required
+@permission_required('administrativo.delete_estudiante', )
 def eliminar_estudiante(request, id):
     """
     """
@@ -124,6 +128,7 @@ def en_grupo(nombre):
         return user.groups.filter(name=nombre).exists()
     return user_passes_test(predicate)
 
+@login_required
 @en_grupo('supervisor')
 def crear_numero_telefonico(request):
     """
@@ -141,7 +146,7 @@ def crear_numero_telefonico(request):
 
     return render(request, 'crearNumeroTelefonico.html', diccionario)
 
-
+@login_required
 def editar_numero_telefonico(request, id):
     """
     """
@@ -158,6 +163,7 @@ def editar_numero_telefonico(request, id):
 
     return render(request, 'crearNumeroTelefonico.html', diccionario)
 
+@login_required
 def crear_numero_telefonico_estudiante(request, id):
     """
     """
